@@ -16,7 +16,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
             projectName,
             mobileNumber,
             email,
-            projectTypeId,
+            projectType,
             civilId,
             password,
             area,
@@ -32,7 +32,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
             projectName,
             mobileNumber,
             email,
-            projectTypeId,
+            projectType,
             civilId,
             password,
             area,
@@ -44,7 +44,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
         });
 
 
-        const projectType = await ProjectType.findByPk(projectTypeId, {
+        const proType = await ProjectType.findByPk(projectType, {
             attributes: ['ar', 'en']
         });
 
@@ -52,7 +52,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
         businessOwner.dataValues.createdAt = undefined;
         businessOwner.dataValues.updatedAt = undefined;
         businessOwner.dataValues.password = undefined;
-        businessOwner.dataValues.projectTypeId = projectType;
+        businessOwner.dataValues.projectType = proType;
 
         const token = await createToken(businessOwner.id)
 
@@ -98,7 +98,12 @@ exports.login = asyncHandler(async (req, res, next) => {
             }), 400))
         }
 
+        const projectType = await ProjectType.findByPk(Owner.projectType, {
+            attributes: ['ar', 'en']
+        });
         Owner.dataValues.password = undefined;
+        Owner.dataValues.projectType = projectType;
+
         const token = await createToken(Owner.id)
 
 

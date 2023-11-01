@@ -91,7 +91,7 @@ const Owner = sequelize.define('Owner', {
     },
 
 
-    projectTypeId: {
+    projectType: {
         type: DataTypes.INTEGER,
         allowNull: false,
 

@@ -125,14 +125,14 @@ exports.ownerSignupVaildator = [
         }
     }),
 
-    check("projectTypeId").notEmpty().withMessage(
+    check("projectType").notEmpty().withMessage(
 
         JSON.stringify({
             ar: "يجب ان تدخل نوع المشروع الخاص بك",
             en: "Owner must enter project Type"
         })
     ).custom(async (value, { req }) => {
-        const type = await ProjectType.findByPk(req.body.projectTypeId);
+        const type = await ProjectType.findByPk(req.body.projectType);
         if (!type) {
             throw new Error(JSON.stringify({
                 ar: "الرجاء اختيار نوع مشروع من الموجودين",

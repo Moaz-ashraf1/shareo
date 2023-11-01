@@ -32,7 +32,7 @@ const ProjectType = sequelize.define('ProjectType', {
 
 })
 
-ProjectType.hasMany(Owner, { as: "owner", foreignKey: 'projectTypeId' });
+ProjectType.hasMany(Owner, { as: "owner", foreignKey: 'projectType' });
 
 
 (async () => {
