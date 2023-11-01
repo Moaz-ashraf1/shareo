@@ -8,6 +8,7 @@ const sequelize = require('./Sequelize/config');
 const AppError = require('./utils/appError')
 const globalError = require("./Middleware/globalErrorHandling ")
 const authRouter = require('./Routes/OwnerAuthRoute')
+
 const projectTypeRouter = require('./Routes/ProjectTypesRoute')
 
 const app = express();

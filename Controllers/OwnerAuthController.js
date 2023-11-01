@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 
 const { createToken } = require('../utils/createToken')
 const BusinessOwner = require('../Models/BusinessOwner')
+const ProjectType = require('../Models/ProjectType')
 const AppError = require('../utils/appError')
 
 // @desc   signup
@@ -42,15 +43,16 @@ exports.signup = asyncHandler(async (req, res, next) => {
             notes
         });
 
-        // // Use eager loading to populate the associated ProjectType
-        // const ownerWithProjectType = await BusinessOwner.findByPk(bussinesOwner.id, {
-        //     include: 'ProjectType', // Use the alias defined in your association
-        // });
+
+        const projectType = await ProjectType.findByPk(projectTypeId, {
+            attributes: ['ar', 'en']
+        });
 
 
         businessOwner.dataValues.createdAt = undefined;
         businessOwner.dataValues.updatedAt = undefined;
         businessOwner.dataValues.password = undefined;
+        businessOwner.dataValues.projectTypeId = projectType;
 
         const token = await createToken(businessOwner.id)
 
