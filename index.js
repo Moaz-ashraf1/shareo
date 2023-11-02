@@ -5,7 +5,7 @@ require('dotenv').config({
 });
 
 const sequelize = require('./Sequelize/config');
-const AppError = require('./utils/apiError')
+const ApiError = require('./utils/apiError')
 const globalError = require("./Middleware/globalErrorHandling ")
 const authRouter = require('./Routes/OwnerAuthRoute')
 
@@ -32,7 +32,7 @@ app.use('/api/v1/projectType/', projectTypeRouter)
 
 // Handle unmatched routes
 app.all("*", (req, res, next) => {
-    return next(new AppError(
+    return next(new ApiError(
         JSON.stringify({
             ar: `لا يمكن العثور على هذا المسار: ${req.originalUrl}`,
 
@@ -42,7 +42,6 @@ app.all("*", (req, res, next) => {
 
         , 400));
 });
-
 
 // Global error handling middleware for express
 app.use(globalError);
