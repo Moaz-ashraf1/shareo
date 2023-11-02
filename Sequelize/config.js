@@ -1,5 +1,6 @@
 const { Sequelize, Op, Model, DataTypes } = require("sequelize");
 
+
 const sequelize = new Sequelize(
     process.env.DB_DATABASE,
     process.env.DB_USERNAME,

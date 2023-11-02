@@ -8,25 +8,18 @@ const sequelize = require('./Sequelize/config');
 const ApiError = require('./utils/apiError')
 const globalError = require("./Middleware/globalErrorHandling ")
 const authRouter = require('./Routes/OwnerAuthRoute')
-
 const projectTypeRouter = require('./Routes/ProjectTypesRoute')
+const { connectToDatabase } = require('./db/connectToDB')
 
 const app = express();
 
-async function connectToDatabase() {
-    try {
-        await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-}
+// connect to db 
 connectToDatabase();
-
 
 app.use(express.json());
 app.use(morgan('dev'));
 
+// mount routes
 app.use('/api/v1/businesOwner/', authRouter)
 app.use('/api/v1/projectType/', projectTypeRouter)
 
@@ -46,6 +39,7 @@ app.all("*", (req, res, next) => {
 // Global error handling middleware for express
 app.use(globalError);
 
+
 const PORT = process.env.PORT || 3000;
 sequelize.sync()
     .then(() => {
@@ -55,6 +49,7 @@ sequelize.sync()
     })
     .catch((error) => {
         console.error('Error syncing database:', error);
+
     });
 
 

@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
-
+const JWT = require('jsonwebtoken')
 const { createToken } = require('../utils/createToken')
 const BusinessOwner = require('../Models/BusinessOwnerModel')
 const ProjectType = require('../Models/ProjectTypeModel')
@@ -124,7 +124,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
 });
 
 // @desc   login
-// @route  POST /api/v1/auth/login
+// @route  POST /api/v1/businesOwner/login
 // @access public
 exports.login = asyncHandler(async (req, res, next) => {
 
@@ -176,4 +176,73 @@ exports.login = asyncHandler(async (req, res, next) => {
     }
 
 
+})
+
+// @desc   Protect (not complete)
+exports.protect = asyncHandler(async (req, res, next) => {
+
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        token = req.headers.authorization.split(' ')[1]
+    }
+    if (!token) {
+        return next(new ApiError(JSON.stringify({
+            en: "You are not logged in, please login to get access to this route",
+            ar: "لم تقم بتسجيل الدخول، يرجى تسجيل الدخول لتتمكن من الوصول إلى هذا المسار",
+        }), 401));
+    }
+
+    const decoded = JWT.verify(token, process.env.JWT_SECRET_KEY)
+
+    const Owner = await BusinessOwner.findOne({ where: { id: decoded.id } })
+    if (!Owner) {
+        return next(new ApiError(JSON.stringify({
+            en: "the owner that belong to this token does not exist",
+            ar: "المالك الذي ينتمي إلى هذا الرمز غير موجود",
+        }), 403));
+    }
+
+    // check if user changed his password after token created
+
+    // attach owner to request object
+
+
+})
+
+// @desc   change owner password
+// @route  POST /api/v1/businesOwner/changePassword
+// @access (only logged in users)
+exports.changePassword = asyncHandler(async (req, res, next) => {
+
+    const { password, confirmPassword } = req.body
+
+    if (password !== confirmPassword) {
+        return next(new ApiError(JSON.stringify({
+            ar: "تأكيد كلمة المرور الجديده غير متطابق",
+            en: "The new password confirmation does not match"
+        }), 400))
+    }
+
+    const owner = await BusinessOwner.findOne({ where: { id: 2 } })
+    if (!owner) {
+        return next(new ApiError(JSON.stringify({
+            ar: "المستخدم غير موجود",
+            en: "owner does not exist"
+        }), 400))
+    }
+
+    console.log(owner);
+    const hashedPassword = await bcrypt.hash(password, 12)
+
+    await owner.update({
+        password: hashedPassword
+    })
+
+    res.status(200).json({
+        success: true,
+        data: {
+            "ar": "تم تغير كلمه المرور بنجاح",
+            "en": "password updated successfully",
+        }
+    });
 })

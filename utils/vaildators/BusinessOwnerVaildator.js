@@ -147,13 +147,11 @@ exports.ownerSignupVaildator = [
 exports.ownerLoginValidator = [
     check("mobileNumber").optional().notEmpty()
         .withMessage(JSON.stringify({
-
             ar: "لا بد من ادخال رقم الجوال",
             en: "you must provide a mobile number"
 
         })).isLength({ min: 8, max: 8 }).withMessage(
             JSON.stringify({
-
                 ar: "رقم الجوال غير صحيح، يجب أن يحتوي على 8 أرقام فقط",
                 en: "Invalid mobile number, it should contain exactly 8 digits"
             })
@@ -168,10 +166,8 @@ exports.ownerLoginValidator = [
         }),
     check("email").optional().notEmpty()
         .withMessage(JSON.stringify({
-
             ar: "لا بد من ادخال البريد الالكتروني",
             en: "Owner must provide a mobile number"
-
         })).isEmail().withMessage(
 
             JSON.stringify({
@@ -215,5 +211,34 @@ exports.ownerLoginValidator = [
 
 
         })
+    , validatorMiddleware
+]
+
+exports.changePasswordValidator = [
+    check("password").notEmpty()
+        .withMessage(JSON.stringify({
+            ar: "لا بد من ادخال كلمه المرور الجديد",
+            en: "you must provide a new password"
+        })).isLength({ min: 6 }).withMessage(
+            JSON.stringify({
+                ar: "يجب ان يكون الرقم السري مكون علي الاقل من 6 خانات",
+                en: "Password must be at least 6 digits"
+            })
+        ),
+
+    check("confirmPassword").notEmpty()
+        .withMessage(JSON.stringify({
+            ar: "لا بد من ادخال تاكيد كلمه المرور الجديدة",
+            en: "you must provide a new password confirmation"
+        })).custom((val, { req }) => {
+            if (val !== req.body.password) {
+                throw new Error(JSON.stringify({
+                    ar: "تأكيد كلمة المرور الجديده غير متطابق",
+                    en: "The new password confirmation does not match"
+                }))
+            }
+            return true
+        })
+
     , validatorMiddleware
 ]
