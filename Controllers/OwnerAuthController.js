@@ -6,6 +6,67 @@ const BusinessOwner = require('../Models/BusinessOwner')
 const ProjectType = require('../Models/ProjectType')
 const AppError = require('../utils/appError')
 
+
+// @desc   check Data Before Signup
+// @route  POST /api/v1/businesOwner/checkDataBeforeSignup
+// @access public
+exports.checkDataBeforeSignup = asyncHandler(async (req, res, next) => {
+    const {
+        profileImg,
+        projectName,
+        mobileNumber,
+        email,
+        projectType,
+        civilId,
+        password,
+        area,
+        block,
+        street,
+        paciNumber,
+        jadaa,
+        notes
+    } = req.body;
+
+    // Mobile phone number
+    const phone = await BusinessOwner.findOne({ where: { mobileNumber } })
+
+    if (phone) {
+        return next(new AppError(JSON.stringify({
+            ar: "رقم الجوال مسجل مسبقا",
+            en: "Mobile number already exists",
+        }), 400));
+    }
+
+    // Civil identification
+    const civil = await BusinessOwner.findOne({ where: { civilId } })
+
+    if (civil) {
+        return next(new AppError(JSON.stringify({
+            ar: "الرقم المدني مسجل مسبقا",
+            en: "Civil id already exists",
+        }), 400));
+    }
+
+    // Email addresses
+    const emailAddress = await BusinessOwner.findOne({ where: { email } })
+
+    if (emailAddress) {
+        return next(new AppError(JSON.stringify({
+            ar: "البريد الالكتروني مسجل مسبقا",
+            en: "Email address already exists",
+        }), 400));
+    }
+
+    res.status(200).json({
+        success: true,
+        data: {
+            "ar": "تم التحقق من البيانات بنجاح",
+            "en": "Data check successfully",
+        }
+    });
+});
+
+
 // @desc   signup
 // @route  POST /api/v1/businesOwner/signup
 // @access public
