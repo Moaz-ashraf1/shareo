@@ -39,6 +39,8 @@ app.all("*", (req, res, next) => {
 app.use(globalError);
 
 
+
+
 const PORT = process.env.PORT || 3000;
 sequelize.sync()
     .then(() => {

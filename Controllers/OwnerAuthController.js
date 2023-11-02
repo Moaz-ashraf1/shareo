@@ -12,19 +12,10 @@ const AppError = require('../utils/appError')
 // @access public
 exports.checkDataBeforeSignup = asyncHandler(async (req, res, next) => {
     const {
-        profileImg,
-        projectName,
+
         mobileNumber,
         email,
-        projectType,
         civilId,
-        password,
-        area,
-        block,
-        street,
-        paciNumber,
-        jadaa,
-        notes
     } = req.body;
 
     // Mobile phone number
