@@ -2,8 +2,8 @@ const { check } = require("express-validator");
 const bcrypt = require("bcrypt");
 
 const validatorMiddleware = require("../../Middleware/validatorMiddleware");
-const Owner = require("../../Models/BusinessOwner");
-const ProjectType = require("../../Models/ProjectType");
+const Owner = require("../../Models/BusinessOwnerModel");
+const ProjectType = require("../../Models/ProjectTypeModel");
 
 
 exports.ownerSignupVaildator = [

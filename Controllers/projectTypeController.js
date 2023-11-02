@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const ProjectType = require("../Models/ProjectType");
+const ProjectType = require("../Models/ProjectTypeModel");
 
 exports.createProjectTypes = asyncHandler(async (req, res, next) => {
     const projectTypesData = [

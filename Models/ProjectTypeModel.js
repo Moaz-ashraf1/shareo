@@ -2,7 +2,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../Sequelize/config');
 
-const Owner = require("../Models/BusinessOwner")
+const Owner = require("../Models/BusinessOwnerModel")
 
 const ProjectType = sequelize.define('ProjectType', {
 

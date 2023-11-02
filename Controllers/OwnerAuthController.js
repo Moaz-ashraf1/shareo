@@ -2,9 +2,9 @@ const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 
 const { createToken } = require('../utils/createToken')
-const BusinessOwner = require('../Models/BusinessOwner')
-const ProjectType = require('../Models/ProjectType')
-const AppError = require('../utils/appError')
+const BusinessOwner = require('../Models/BusinessOwnerModel')
+const ProjectType = require('../Models/ProjectTypeModel')
+const ApiError = require('../utils/apiError')
 
 
 // @desc   check Data Before Signup
@@ -22,7 +22,7 @@ exports.checkDataBeforeSignup = asyncHandler(async (req, res, next) => {
     const phone = await BusinessOwner.findOne({ where: { mobileNumber } })
 
     if (phone) {
-        return next(new AppError(JSON.stringify({
+        return next(new ApiError(JSON.stringify({
             ar: "رقم الجوال مسجل مسبقا",
             en: "Mobile number already exists",
         }), 400));
@@ -32,7 +32,7 @@ exports.checkDataBeforeSignup = asyncHandler(async (req, res, next) => {
     const civil = await BusinessOwner.findOne({ where: { civilId } })
 
     if (civil) {
-        return next(new AppError(JSON.stringify({
+        return next(new ApiError(JSON.stringify({
             ar: "الرقم المدني مسجل مسبقا",
             en: "Civil id already exists",
         }), 400));
@@ -42,7 +42,7 @@ exports.checkDataBeforeSignup = asyncHandler(async (req, res, next) => {
     const emailAddress = await BusinessOwner.findOne({ where: { email } })
 
     if (emailAddress) {
-        return next(new AppError(JSON.stringify({
+        return next(new ApiError(JSON.stringify({
             ar: "البريد الالكتروني مسجل مسبقا",
             en: "Email address already exists",
         }), 400));
@@ -115,7 +115,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
             data: businessOwner
         });
     } catch (error) {
-        return next(new AppError(JSON.stringify({
+        return next(new ApiError(JSON.stringify({
             en: "An error occurred while creating a new account",
             ar: "حدث خطأاثناء انشاء حساب جديد"
         }), 400))
@@ -144,7 +144,7 @@ exports.login = asyncHandler(async (req, res, next) => {
         }
 
         if (!Owner || !(await bcrypt.compare(req.body.password, Owner.password))) {
-            return next(new AppError(JSON.stringify({
+            return next(new ApiError(JSON.stringify({
                 en: 'Incorrecte email or password',
                 ar: "الايميل او الرقم السري غير صحيح"
             }), 400))
@@ -169,7 +169,7 @@ exports.login = asyncHandler(async (req, res, next) => {
         })
 
     } catch (error) {
-        return next(new AppError(JSON.stringify({
+        return next(new ApiError(JSON.stringify({
             en: "An error occurred while Login",
             ar: "حدث خطأاثناء تسجيل الدخول"
         }), 400))

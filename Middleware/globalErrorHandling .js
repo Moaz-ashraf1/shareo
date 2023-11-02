@@ -1,4 +1,4 @@
-const AppError = require("../utils/appError")
+const ApiError = require("../utils/apiError")
 
 const sendErrorForDevelopment = (err, res) =>
     res.status(err.statusCode).json({
@@ -11,7 +11,7 @@ const sendErrorForDevelopment = (err, res) =>
 const globalError = (err, req, res, next) => {
 
     if (process.env.NODE_ENV !== 'production') {
-        if (err instanceof AppError) {
+        if (err instanceof ApiError) {
             const errorMessages = JSON.parse(err.message);
             res.status(err.statusCode).json({
                 success: false,
