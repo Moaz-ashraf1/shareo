@@ -79,6 +79,8 @@ exports.signup = asyncHandler(async (req, res, next) => {
             notes
         } = req.body;
 
+        console.log(req.body);
+
         const businessOwner = await BusinessOwner.create({
             profileImg,
             projectName,
@@ -94,7 +96,6 @@ exports.signup = asyncHandler(async (req, res, next) => {
             jadaa,
             notes
         });
-
 
         const proType = await ProjectType.findByPk(projectType, {
             attributes: ['ar', 'en']
@@ -115,6 +116,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
             data: businessOwner
         });
     } catch (error) {
+        console.log(error);
         return next(new ApiError(JSON.stringify({
             en: "An error occurred while creating a new account",
             ar: "حدث خطأاثناء انشاء حساب جديد"
@@ -231,11 +233,10 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
         }), 400))
     }
 
-    console.log(owner);
-    const hashedPassword = await bcrypt.hash(password, 12)
+
 
     await owner.update({
-        password: hashedPassword
+        password
     })
 
     res.status(200).json({

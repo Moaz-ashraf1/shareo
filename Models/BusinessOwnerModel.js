@@ -133,6 +133,10 @@ const Owner = sequelize.define('Owner', {
                 }),
             },
         },
+        set(value) {
+            const hashedPassword = bcrypt.hashSync(value, 12);
+            this.setDataValue('password', hashedPassword);
+        },
     },
     area: {
         type: DataTypes.STRING,
@@ -182,11 +186,11 @@ const Owner = sequelize.define('Owner', {
 
 })();
 
-Owner.beforeCreate(async (owner) => {
-    if (owner.password) {
-        owner.password = await bcrypt.hash(owner.password, 12)
-    }
-})
+// Owner.beforeCreate(async (owner) => {
+//     if (owner.password) {
+//         owner.password = await bcrypt.hash(owner.password, 12)
+//     }
+// })
 
 
 module.exports = Owner;
