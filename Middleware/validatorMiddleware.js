@@ -5,6 +5,7 @@ const validatorMiddleware = (req, res, next) => {
     const result = validationResult(req);
 
     if (!result.isEmpty()) {
+        console.log(result);
         const errorMessages = result.errors.map((err) => {
             let message;
             try {

@@ -89,15 +89,6 @@ const Owner = sequelize.define('Owner', {
             },
         },
     },
-
-
-    projectType: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-
-    },
-
-
     civilId: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -119,8 +110,6 @@ const Owner = sequelize.define('Owner', {
             },
         },
     },
-
-
     password: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -174,6 +163,10 @@ const Owner = sequelize.define('Owner', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     },
+    ProjectTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    }
 });
 
 

@@ -2,8 +2,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../Sequelize/config');
 
-const Owner = require("../Models/BusinessOwnerModel")
-
 const ProjectType = sequelize.define('ProjectType', {
 
     id: {
@@ -30,19 +28,13 @@ const ProjectType = sequelize.define('ProjectType', {
         type: DataTypes.DATE,
     },
 
-})
-
-ProjectType.hasMany(Owner, { as: "owner", foreignKey: 'projectType' });
-
-
+});
 (async () => {
-    try {
-        await ProjectType.sync({
-            force: false,
-        });
-    } catch (error) {
-        console.error('Error syncing model:', error);
-    }
+
+    await ProjectType.sync({
+        force: false,
+    });
+
 })();
 
 module.exports = ProjectType;

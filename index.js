@@ -10,6 +10,7 @@ const globalError = require("./Middleware/globalErrorHandling ")
 const authRouter = require('./Routes/OwnerAuthRoute')
 const projectTypeRouter = require('./Routes/ProjectTypesRoute')
 const { connectToDatabase } = require('./db/connectToDB')
+const association = require("./db/Associations")
 
 const app = express();
 

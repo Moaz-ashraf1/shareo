@@ -86,7 +86,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
             projectName,
             mobileNumber,
             email,
-            projectType,
+            ProjectTypeId: projectType,
             civilId,
             password,
             area,
@@ -96,6 +96,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
             jadaa,
             notes
         });
+
 
         const proType = await ProjectType.findByPk(projectType, {
             attributes: ['ar', 'en']
@@ -152,10 +153,11 @@ exports.login = asyncHandler(async (req, res, next) => {
             }), 400))
         }
 
-        const projectType = await ProjectType.findByPk(Owner.projectType, {
+        const projectType = await ProjectType.findByPk(Owner.ProjectTypeId, {
             attributes: ['ar', 'en']
         });
         Owner.dataValues.password = undefined;
+        Owner.dataValues.ProjectTypeId = undefined;
         Owner.dataValues.projectType = projectType;
 
         const token = await createToken(Owner.id)
